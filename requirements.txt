@@ -1,0 +1,6 @@
+redis
+fastapi
+python-dotenv 
+httpx
+fastapi[standard]
+slowapi

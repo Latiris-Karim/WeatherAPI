@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  web:
+    build: . #builds based on Dockerfile in this directory so no need to call a image for this service
+    command: fastapi run main.py --port 80 --reload
+    volumes:
+      - .:/app
+    ports:
+      - "8080:80"
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379  # Explicitly set the URL
+    env_file:
+      - .env
+
+  redis:
+    image: "redis:alpine" #call the image 
+    command: redis-server --bind 0.0.0.0  # Explicitly bind to all interfaces
