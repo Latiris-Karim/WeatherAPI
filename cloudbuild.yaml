@@ -1,6 +1,6 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/weather-api',  '--no-cache','.']
+    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/weather-api2',  '--no-cache','.']
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
@@ -8,7 +8,7 @@ steps:
       - -c
       - |
         gcloud run deploy weatherapi \
-          --image=gcr.io/$_PROJECT_ID/weather-api \
+          --image=gcr.io/$_PROJECT_ID/weather-api2 \
           --platform=managed \
           --region=$_REGION \
           --allow-unauthenticated \
