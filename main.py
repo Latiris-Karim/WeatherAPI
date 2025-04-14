@@ -7,7 +7,8 @@ from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
 import json
 from config.redis_client import r
-
+from config.secrets_manager import get_secrets
+from dotenv import load_dotenv
 
 logger = logging.getLogger('uvicorn.error')
 logger.setLevel(logging.DEBUG)
@@ -17,6 +18,8 @@ app = FastAPI()
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
+get_secrets()
+load_dotenv()
 
 @app.get("/weather/")
 async def weathercall(city: str, timespan: str):
