@@ -71,3 +71,9 @@ gcloud run services remove-iam-policy-binding weatherapi --member="allUsers" --r
 CI/CD PIPELINE BUILDING : 
 1. enable the
 gcloud services enable cloudbuild.googleapis.com run.googleapis.com
+
+
+git/github 
+always the problem of unable to push to new repository coz no shared history fix:
+git pull origin main --allow-unrelated-histories
+
