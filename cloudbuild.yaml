@@ -1,6 +1,6 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/weather-api', '.']
+    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/weather-api',  '--no-cache','.']
 
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
