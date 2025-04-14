@@ -1,7 +1,13 @@
 steps:
+  # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/weather-api',  '--no-cache','.']
+    args: ['build', '-t', 'gcr.io/$_PROJECT_ID/weather-api', '--no-cache', '.']
+  
+  # Push the image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$_PROJECT_ID/weather-api']
 
+  # Deploy the image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
@@ -15,6 +21,7 @@ steps:
           --vpc-connector=$_VPC_CONNECTOR \
           --set-env-vars=REDISHOST=$$REDISHOST,REDISPORT=$$REDISPORT,GOOGLE_CLOUD_PROJECT=$_PROJECT_ID,ENVIRONMENT=$_ENVIRONMENT
     secretEnv: ['REDISHOST','REDISPORT']
+
 # CORRECT PLACEMENT FOR SECRETS
 availableSecrets:
   secretManager:
