@@ -1,9 +1,7 @@
 steps:
-  # Build step
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$_PROJECT_ID/weather-api', '.']
 
-  # Deploy step
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: bash
     args:
@@ -17,15 +15,16 @@ steps:
           --vpc-connector=$_VPC_CONNECTOR \
           --set-env-vars=REDISHOST=$$REDISHOST,REDISPORT=$$REDISPORT,GOOGLE_CLOUD_PROJECT=$_PROJECT_ID,ENVIRONMENT=$_ENVIRONMENT
 
+# CORRECT PLACEMENT FOR SECRETS
+availableSecrets:
+  secretManager:
+  - versionName: projects/leafy-ether-456618-q6/secrets/REDISHOST/versions/latest
+    env: 'REDISHOST'
+  - versionName: projects/leafy-ether-456618-q6/secrets/REDISPORT/versions/latest
+    env: 'REDISPORT'
+
 options:
   logging: CLOUD_LOGGING_ONLY
-  # Connect secrets to environment variables
-  availableSecrets:
-    secretManager:
-    - versionName: projects/leafy-ether-456618-q6/secrets/REDISHOST/versions/latest
-      env: 'REDISHOST'
-    - versionName: projects/leafy-ether-456618-q6/secrets/REDISPORT/versions/latest
-      env: 'REDISPORT'
 
 substitutions:
   _PROJECT_ID: leafy-ether-456618-q6
