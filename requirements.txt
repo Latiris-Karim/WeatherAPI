@@ -4,3 +4,4 @@ python-dotenv
 httpx
 fastapi[standard]
 slowapi
+google-cloud-secret-manager
