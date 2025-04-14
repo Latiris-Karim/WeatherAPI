@@ -5,7 +5,7 @@ from google.cloud import secretmanager
 def get_secrets():
     
     project_id = os.getenv('GOOGLE_CLOUD_PROJECT')
-    secret_ids = ["weather_key","REDIS_URL"]
+    secret_ids = ["weather_key","REDIS_URL","REDISHOST","REDISPORT"]
 
     client = secretmanager.SecretManagerServiceClient()
 
