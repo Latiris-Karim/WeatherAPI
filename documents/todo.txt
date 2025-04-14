@@ -1,4 +1,0 @@
-setup git, push to github
-begin with UI angular 17 + taiwind css 
-try cloud run + memorystore redis for deployment testing (can do this after frontend)
-
