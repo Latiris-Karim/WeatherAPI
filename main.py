@@ -38,3 +38,7 @@ async def weathercall(city: str, timespan: str):
 @app.get("/hello")
 async def hello():
     return "Hello, CI/CD pipeline :)"
+
+@app.get("/")
+async def root():
+    return {"status": "ok"}
