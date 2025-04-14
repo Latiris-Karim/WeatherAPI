@@ -2,19 +2,21 @@ version: '3.9'
 
 services:
   web:
-    build: . #builds based on Dockerfile in this directory so no need to call a image for this service
+    build: .
     command: fastapi run main.py --port 80 --reload
     volumes:
       - .:/app
+      - /c/Users/einma/AppData/Roaming/gcloud/application_default_credentials.json:/secrets/service-account.json
     ports:
       - "8080:80"
     depends_on:
       - redis
     environment:
-      - REDIS_URL=redis://redis:6379  # Explicitly set the URL
+      - REDIS_URL=redis://redis:6379
+      - GOOGLE_APPLICATION_CREDENTIALS=/secrets/service-account.json
     env_file:
       - .env
 
   redis:
-    image: "redis:alpine" #call the image 
-    command: redis-server --bind 0.0.0.0  # Explicitly bind to all interfaces
+    image: "redis:alpine"
+    command: redis-server --bind 0.0.0.0
