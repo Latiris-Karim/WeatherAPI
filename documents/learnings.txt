@@ -1,3 +1,7 @@
+LOCAL:
+run taskkill /F /IM python.exe to restart fastapi server havent found a different way. 
+
+PODMAN
 to run container locally, make sure you map the port inside the container to a port on your machine;
 e.g 
 podman run -p 8080:80 weatherapi
@@ -10,6 +14,7 @@ use .dockerignore always to exclude .env aswell as other not needed files, docke
 -------------------------------------------------------------------------
 need to use docker-compose.yml if i want to use redis server for caching my weatherapi response
 how to execute it;
+use podman-compose down if u get an error. 
 podman-compose up --build -> first WSL and move into project folder 
 podman compose --name weather-api up --build
 
@@ -31,3 +36,38 @@ Google Cloud Memorystore would be normally used for Redis.
 in general docker-compose.yml is for local testing 
 
 environment variable in env very helpful to have multiple setups available in code at the same time.
+
+GOOGLE CLOUD STUFF I LEARNED:
+
+for CLI install gcloud 
+pip install google-cloud-secret-manager
+setting up secrets on secret manager
+
+to run local container need to create env for json key and in docker compose mount it
+
+create VPC connector
+create memorystore for redis
+
+create image on artifact registry cmd in gcloud shell after cd to project;
+gcloud builds submit --tag gcr.io/leafy-ether-456618-q6/weather-api   -> image name must be all lowercase
+
+deploy command for cloud run
+gcloud run deploy weatherapi --image gcr.io/leafy-ether-456618-q6/weather-api --platform managed --allow-unauthenticated --region europe-west10 --vpc-connector redis-weather-connector --set-env-vars REDISHOST=10.208.213.132,REDISPORT=6379,GOOGLE_CLOUD_PROJECT=leafy-ether-456618-q6,ENVIRONMENT=production
+
+CONSUMER INVALID FIX / apparently cloud run always looks to check if it runs on port 8080 which i didnt have before
+.> activated service account by creating key and saving it and then using this command
+gcloud auth activate-service-account 1087508589143-compute@developer.gserviceaccount.com --key-file="C:\Users\einma\AppData\Roaming\gcloud\key.json"
+...
+the problem was that project id in secret access wasnt passed on deployment and it obv oculdnt access .env ...
+
+to make the api publiclly avaiallable u need to set the authoriztation OFF u can do this in the UI :
+
+CLOUD RUN > the service > security > Allow unauthenticated invocations
+or this command
+gcloud run services add-iam-policy-binding weatherapi --member="allUsers" --role="roles/run.invoker" --region=europe-west10 --platform=managed
+gcloud run services remove-iam-policy-binding weatherapi --member="allUsers" --role="roles/run.invoker" --region=europe-west10 --platform=managed
+
+
+CI/CD PIPELINE BUILDING : 
+1. enable the
+gcloud services enable cloudbuild.googleapis.com run.googleapis.com
