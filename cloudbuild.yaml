@@ -14,7 +14,7 @@ steps:
           --allow-unauthenticated \
           --vpc-connector=$_VPC_CONNECTOR \
           --set-env-vars=REDISHOST=$$REDISHOST,REDISPORT=$$REDISPORT,GOOGLE_CLOUD_PROJECT=$_PROJECT_ID,ENVIRONMENT=$_ENVIRONMENT
-
+    secretEnv: ['REDISHOST','REDISPORT']
 # CORRECT PLACEMENT FOR SECRETS
 availableSecrets:
   secretManager:
