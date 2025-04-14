@@ -34,3 +34,7 @@ async def weathercall(city: str, timespan: str):
         r.set(weather, json.dumps(weather_data))
         logger.debug("Weather_info_no_redis:", weather_data)
         return weather_data
+
+@app.get("/hello")
+async def hello():
+    return "Hello, CI/CD pipeline :)"
