@@ -9,15 +9,32 @@ import json
 from config.redis_client import r
 from config.secrets_manager import get_secrets
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 logger = logging.getLogger('uvicorn.error')
 logger.setLevel(logging.DEBUG)
 limiter = Limiter(key_func=get_remote_address, default_limits=["10/minute"])
  
 app = FastAPI()
+
+#origins = [
+ #
+ #    "http://localhost:4200",  # for local Angular dev
+   # "soon",  # if hosted elsewhere
+#]
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.add_middleware(SlowAPIMiddleware)
+
 get_secrets()
 load_dotenv()
 
