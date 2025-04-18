@@ -19,8 +19,7 @@ app = FastAPI()
 
 origins = [
  
- "http://localhost:4200",  # for local Angular dev
-  "soon",  # if hosted elsewhere
+  "http://localhost:4200",
 ]
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
