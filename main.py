@@ -42,10 +42,10 @@ async def weathercall(city: str, timespan: str):
     if cached:
         weather_data = json.loads(cached)
         logger.debug("Weather_info_redis:", weather_data)
-        return cached
+        return weather_data  # 
     else:
         weather_data = await location_time.getinfo(city, timespan)
-        r.set(weather, json.dumps(weather_data))
+        r.set(weather, json.dumps(weather_data), ex=18000)
         logger.debug("Weather_info_no_redis:", weather_data)
         return weather_data
 
