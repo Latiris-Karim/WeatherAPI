@@ -14,8 +14,8 @@ logic is minimal — the project was about building the deployment pipeline.
 
 ## Deploy
 
-Push to `main` → Cloud Build → Artifact Registry → new Cloud Run revision. 
-Pipeline defined in `cloudbuild.yaml`.
+A Cloud Build trigger on `main` runs the pipeline in `cloudbuild.yaml`: 
+build → Artifact Registry → Cloud Run.
 
 ## What I learned
 
